@@ -1,0 +1,10 @@
+# Version 0.1.7
+path:  *
+regexp:  /^(.*)\/?$/i
+
+path:  /files/:file(*)
+regexp:  /^\/files\/(?:((.*)))\/?$/i
+
+# Version > 0.1.7 including 6.2
+invalid regex
+

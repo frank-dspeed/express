@@ -353,14 +353,14 @@ describe('Router', function(){
         throw new Error('should not be called')
       }
 
-      router.all('*', function (req, res) {
+      router.all('(.*)', function (req, res) {
         res.end()
       })
 
       router.handle({ url: '/', method: 'GET' }, { end: cb }, no)
       router.handle({ url: '/foo', method: 'GET' }, { end: cb }, no)
       router.handle({ url: 'foo', method: 'GET' }, { end: cb }, no)
-      router.handle({ url: '*', method: 'GET' }, { end: cb }, no)
+      router.handle({ url: '(.*)', method: 'GET' }, { end: cb }, no)
     })
   })
 
@@ -405,7 +405,7 @@ describe('Router', function(){
       router.handle({ url: '/', method: 'GET' }, { end: cb }, no)
       router.handle({ url: '/foo', method: 'GET' }, { end: cb }, no)
       router.handle({ url: 'foo', method: 'GET' }, { end: cb }, no)
-      router.handle({ url: '*', method: 'GET' }, { end: cb }, no)
+      router.handle({ url: '(.*)', method: 'GET' }, { end: cb }, no)
     })
 
     it('should accept array of middleware', function(done){

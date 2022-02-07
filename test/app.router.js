@@ -313,12 +313,15 @@ describe('app.router', function(){
       var app = express();
       var router = new express.Router({ mergeParams: true });
 
-      router.get('/*.*', function(req, res){
+      router.get('(.*).(.*)', function(req, res){
         var keys = Object.keys(req.params).sort();
+        console.log(keys)
+        console.log('=========')
+        process.exit()
         res.send(keys.map(function(k){ return [k, req.params[k]] }));
       });
 
-      app.use('/user/id:(\\d+)', router);
+      app.use('/user/id:\(\\d+)', router);
 
       request(app)
       .get('/user/id:10/profile.json')
@@ -329,7 +332,7 @@ describe('app.router', function(){
       var app = express();
       var router = new express.Router({ mergeParams: true });
 
-      router.get('/*', function(req, res){
+      router.get('/(.*)', function(req, res){
         var keys = Object.keys(req.params).sort();
         res.send(keys.map(function(k){ return [k, req.params[k]] }));
       });
@@ -380,7 +383,7 @@ describe('app.router', function(){
       var app = express();
       var router = new express.Router({ mergeParams: true });
 
-      router.get('/user:(\\w+)/*', function (req, res, next) {
+      router.get('/user:(\\w+)/(.*)', function (req, res, next) {
         next();
       });
 
@@ -554,7 +557,7 @@ describe('app.router', function(){
   it('should allow escaped regexp', function(done){
     var app = express();
 
-    app.get('/user/\\d+', function(req, res){
+    app.get('/user/(\\d+)', function(req, res){
       res.end('woot');
     });
 
@@ -587,7 +590,7 @@ describe('app.router', function(){
     it('should capture everything', function (done) {
       var app = express()
 
-      app.get('*', function (req, res) {
+      app.get('(.*)', function (req, res) {
         res.end(req.params[0])
       })
 
@@ -599,7 +602,7 @@ describe('app.router', function(){
     it('should decode the capture', function (done) {
       var app = express()
 
-      app.get('*', function (req, res) {
+      app.get('(.*)', function (req, res) {
         res.end(req.params[0])
       })
 
@@ -611,7 +614,7 @@ describe('app.router', function(){
     it('should denote a greedy capture group', function(done){
       var app = express();
 
-      app.get('/user/*.json', function(req, res){
+      app.get('/user/(.*).json', function(req, res){
         res.end(req.params[0]);
       });
 
@@ -623,7 +626,7 @@ describe('app.router', function(){
     it('should work with several', function(done){
       var app = express();
 
-      app.get('/api/*.*', function(req, res){
+      app.get('/api/(.*).(.*)', function(req, res){
         var resource = req.params[0]
           , format = req.params[1];
         res.end(resource + ' as ' + format);
@@ -654,7 +657,7 @@ describe('app.router', function(){
     it('should allow naming', function(done){
       var app = express();
 
-      app.get('/api/:resource(*)', function(req, res){
+      app.get('/api/:resource*', function(req, res){
         var resource = req.params.resource;
         res.end(resource);
       });
@@ -739,7 +742,7 @@ describe('app.router', function(){
     it('should work within arrays', function(done){
       var app = express();
 
-      app.get(['/user/:id', '/foo/*', '/:bar'], function (req, res) {
+      app.get(['/user/:id', '/foo/(.*)', '/:bar'], function (req, res) {
         res.send(req.params.bar);
       });
 
@@ -1068,7 +1071,7 @@ describe('app.router', function(){
     var app = express();
     var path = [];
 
-    app.get('*', function(req, res, next){
+    app.get('(.*)', function(req, res, next){
       path.push(0);
       next();
     });
@@ -1088,7 +1091,7 @@ describe('app.router', function(){
       next();
     });
 
-    app.get('*', function(req, res, next){
+    app.get('(.*)', function(req, res, next){
       path.push(4);
       next();
     });
